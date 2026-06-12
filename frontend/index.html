@@ -7,7 +7,7 @@
         body {
             margin: 0;
             padding: 0;
-            min-height: 100vh; /* 关键修改：让 body 至少撑满整个屏幕的高度 */
+            min-height: 100vh;
             background-color: #1e1e1e;
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -167,31 +167,54 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        // --- 5. Canvas 渲染引擎 ---
+        // --- 5. Canvas 增强版渲染引擎 ---
         function executeDrawActions(actions) {
             actions.forEach(item => {
                 const action = item.action;
                 const params = item.params;
 
                 ctx.beginPath();
-                // 设置颜色
+
+                // 设置通用颜色和线条粗细
                 if (params.color) {
                     ctx.fillStyle = params.color;
                     ctx.strokeStyle = params.color;
                 }
+                ctx.lineWidth = params.line_width || 2; // 默认线宽为2
 
-                // 根据后端返回的 action 类型执行不同操作
+                // 1. 画圆
                 if (action === "draw_circle") {
                     ctx.arc(params.x, params.y, params.radius, 0, 2 * Math.PI);
                     ctx.fill();
                 }
+                // 2. 画矩形
                 else if (action === "draw_rect") {
                     ctx.fillRect(params.x, params.y, params.width, params.height);
                 }
+                // 3. 画直线 (新增)
+                else if (action === "draw_line") {
+                    ctx.moveTo(params.start_x, params.start_y);
+                    ctx.lineTo(params.end_x, params.end_y);
+                    ctx.stroke();
+                }
+                // 4. 画三角形 (新增)
+                else if (action === "draw_triangle") {
+                    ctx.moveTo(params.x1, params.y1);
+                    ctx.lineTo(params.x2, params.y2);
+                    ctx.lineTo(params.x3, params.y3);
+                    ctx.closePath(); // 闭合路径
+                    ctx.fill();
+                }
+                // 5. 写文字 (新增)
+                else if (action === "draw_text") {
+                    const fontSize = params.font_size || 24;
+                    ctx.font = `${fontSize}px 'Segoe UI', sans-serif`;
+                    ctx.fillText(params.text, params.x, params.y);
+                }
+                // 6. 清空画布
                 else if (action === "clear_canvas") {
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                 }
-                // 后续你可以在这里继续扩展画线、画文字等操作
             });
         }
     </script>

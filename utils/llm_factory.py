@@ -12,7 +12,7 @@ class ChatModelFactory:
     def create_chat_model() -> ChatTongyi:
         llm_config = agent_conf.get("llm", {})
         return ChatTongyi(
-            model=llm_config.get("model_name", "qwen-turbo"),
+            model=llm_config.get("model_name", "qwen-plus"),
             temperature=llm_config.get("temperature", 0.1)
         )
 
