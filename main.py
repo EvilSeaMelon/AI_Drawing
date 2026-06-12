@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from utils.database import Base, engine, get_db
-from models.models import CanvasState, TokenLog
+from models.models import CanvasState
 from schemas.payload import CommandRequest
 from agent.core import process_voice_command
 
@@ -29,7 +29,7 @@ app.add_middleware(
 
 
 def _api_response(code: int, message: str, data: Optional[dict] = None) -> dict:
-    """统一的 API 响应格式，对齐项目原有规范"""
+    """统一的 API 响应格式"""
     return {
         "code": code,
         "message": message,

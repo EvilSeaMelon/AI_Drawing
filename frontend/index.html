@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>AI 语音绘图助手</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh; /* 关键修改：让 body 至少撑满整个屏幕的高度 */
+            background-color: #1e1e1e;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;      /* 水平居中 */
+            justify-content: center;  /* 关键修改：垂直居中 */
+        }
+        h1 { margin-bottom: 10px; }
+        #canvas-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            overflow: hidden;
+            margin-bottom: 20px;
+            margin-top: 20px; /* 增加一点顶部边距，让视觉更平衡 */
+        }
+        canvas { display: block; }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        #mic-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+        }
+        #mic-btn.recording {
+            background-color: #f44336;
+            animation: pulse 1.5s infinite;
+        }
+        #status-text {
+            color: #aaaaaa;
+            font-size: 16px;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(244, 67, 54, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 67, 54, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎨 AI 纯语音绘图助手</h1>
+    <p id="status-text">请允许浏览器使用麦克风。点击下方按钮，或按住键盘“空格键”开始说话。</p>
+
+    <div id="canvas-container">
+        <canvas id="paintCanvas" width="800" height="500"></canvas>
+    </div>
+
+    <div class="controls">
+        <button id="mic-btn">🎙️ 点击说话</button>
+    </div>
+
+    <script>
+        // --- 1. 基础配置与画布初始化 ---
+        const BACKEND_URL = "http://127.0.0.1:8000/api/command";
+        const SESSION_ID = "demo_session_" + Math.floor(Math.random() * 10000); // 随机生成会话ID
+
+        const canvas = document.getElementById('paintCanvas');
+        const ctx = canvas.getContext('2d');
+        const micBtn = document.getElementById('mic-btn');
+        const statusText = document.getElementById('status-text');
+
+        // --- 2. 语音识别 (STT) 初始化 ---
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            alert("您的浏览器不支持语音识别，请使用最新版 Chrome 或 Edge 浏览器！");
+        }
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'zh-CN';
+        recognition.interimResults = false; // 只取最终结果
+
+        let isRecording = false;
+
+        // 按钮交互逻辑
+        micBtn.addEventListener('mousedown', startRecording);
+        micBtn.addEventListener('mouseup', stopRecording);
+
+        // 键盘空格键交互逻辑 (满足无鼠标操作的扩展)
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && !isRecording) startRecording();
+        });
+        document.addEventListener('keyup', (e) => {
+            if (e.code === 'Space' && isRecording) stopRecording();
+        });
+
+        function startRecording() {
+            isRecording = true;
+            micBtn.classList.add('recording');
+            micBtn.innerText = "🛑 正在聆听...";
+            statusText.innerText = "请说出您的绘图指令，例如：'在中间画一个红色的圆'...";
+            try { recognition.start(); } catch(e) {}
+        }
+
+        function stopRecording() {
+            isRecording = false;
+            micBtn.classList.remove('recording');
+            micBtn.innerText = "🎙️ 点击说话";
+            recognition.stop();
+        }
+
+        // 当识别到语音并转化为文字时触发
+        recognition.onresult = async (event) => {
+            const transcript = event.results[0][0].transcript;
+            statusText.innerText = `您说: "${transcript}"，AI正在处理中...`;
+
+            // 发送给 FastAPI 后端
+            await sendCommandToAI(transcript);
+        };
+
+        // --- 3. 与后端交互核心逻辑 ---
+        async function sendCommandToAI(text) {
+            try {
+                const response = await fetch(BACKEND_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        session_id: SESSION_ID,
+                        text_command: text
+                    })
+                });
+
+                const data = await response.json();
+                if (data.code === 200) {
+                    const aiResult = data.data;
+                    statusText.innerText = `AI 回复: ${aiResult.message}`;
+
+                    // 1. 语音播报 AI 的回复 (TTS)
+                    speak(aiResult.message);
+
+                    // 2. 渲染画布
+                    executeDrawActions(aiResult.actions);
+                } else {
+                    statusText.innerText = "服务器处理失败，请看控制台。";
+                    console.error(data);
+                }
+            } catch (error) {
+                statusText.innerText = "网络错误，请确保 FastAPI 后端已启动。";
+                console.error("Error:", error);
+            }
+        }
+
+        // --- 4. 语音播报 (TTS) ---
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'zh-CN';
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // --- 5. Canvas 渲染引擎 ---
+        function executeDrawActions(actions) {
+            actions.forEach(item => {
+                const action = item.action;
+                const params = item.params;
+
+                ctx.beginPath();
+                // 设置颜色
+                if (params.color) {
+                    ctx.fillStyle = params.color;
+                    ctx.strokeStyle = params.color;
+                }
+
+                // 根据后端返回的 action 类型执行不同操作
+                if (action === "draw_circle") {
+                    ctx.arc(params.x, params.y, params.radius, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+                else if (action === "draw_rect") {
+                    ctx.fillRect(params.x, params.y, params.width, params.height);
+                }
+                else if (action === "clear_canvas") {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+                // 后续你可以在这里继续扩展画线、画文字等操作
+            });
+        }
+    </script>
+</body>
+</html>
