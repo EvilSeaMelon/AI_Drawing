@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from utils.database import Base, engine, get_db
 from models.models import CanvasState, TokenLog
 from schemas.payload import CommandRequest
+from agent.core import process_voice_command
 
 # 启动时自动创建MySQL数据表
 Base.metadata.create_all(bind=engine)
@@ -49,21 +50,19 @@ async def process_command_endpoint(request: CommandRequest, db: Session = Depend
     print(f"\n[API] Command request received -> session_id={request.session_id}, text={request.text_command}")
 
     try:
-        # TODO: 这里将在下一步接入大模型的 Agent 逻辑
-
-        # 临时 mock 返回数据
-        mock_actions = [
-            {"action": "draw_circle", "params": {"x": 200, "y": 200, "radius": 50, "color": "blue"}}
-        ]
-        ai_message = "好的，我已经在画布中央为您画了一个蓝色的圆。"
+        result = process_voice_command(
+            session_id=request.session_id,
+            text_command=request.text_command,
+            db=db
+        )
 
         return _api_response(
             code=200,
             message="success",
             data={
                 "session_id": request.session_id,
-                "actions": mock_actions,
-                "message": ai_message
+                "actions": result["actions"],
+                "message": result["message"]
             }
         )
     except Exception as e:
