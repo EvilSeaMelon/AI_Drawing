@@ -9,6 +9,7 @@ from models.models import CanvasState
 from schemas.payload import DrawAction
 from utils.llm_factory import chat_model
 from utils.config_handler import agent_conf
+from utils.rag_retriever import rag_engine
 
 
 # 定义一个大模型专属的输出结构
@@ -35,6 +36,13 @@ def process_voice_command(session_id: str, text_command: str, db: Session) -> di
     current_context = json.loads(canvas.current_shapes)
 
     # ==========================================
+    # 新增：rag
+    # ==========================================
+    retrieved_data = rag_engine.retrieve(text_command)
+    rag_context_str = json.dumps(retrieved_data, ensure_ascii=False) if retrieved_data else "未检索到相关模板，请自行发挥。"
+    print(f"[RAG] 检索到的组件知识: {rag_context_str}")
+
+    # ==========================================
     # 2. 组装 Prompt
     # ==========================================
     system_prompt = agent_conf.get("prompts", {}).get("system_template", "你是一个绘图助手。")
@@ -45,6 +53,7 @@ def process_voice_command(session_id: str, text_command: str, db: Session) -> di
 
     messages = prompt_template.format_messages(
         canvas_state=current_context,
+        rag_context=rag_context_str,  # 将 RAG 知识注入 Prompt
         user_input=text_command
     )
 

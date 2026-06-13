@@ -1,0 +1,346 @@
+{
+  "房子": [
+    {"action": "draw_rect", "params": {"x": 20, "y": 40, "width": 60, "height": 60, "color": "#f5f5dc"}, "desc": "房屋主体"},
+    {"action": "draw_triangle", "params": {"x1": 10, "y1": 40, "x2": 50, "y2": 0, "x3": 90, "y3": 40, "color": "#cd5c5c"}, "desc": "红色屋顶"},
+    {"action": "draw_rect", "params": {"x": 40, "y": 60, "width": 20, "height": 40, "color": "#8b4513"}, "desc": "木门"},
+    {"action": "draw_circle", "params": {"x": 30, "y": 55, "radius": 5, "color": "#87cefa"}, "desc": "左边小窗户"}
+  ],
+  "树木": [
+    {"action": "draw_rect", "params": {"x": 40, "y": 50, "width": 20, "height": 50, "color": "#8b4513"}, "desc": "棕色树干"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 30, "radius": 30, "color": "#228b22"}, "desc": "绿色树冠主体"},
+    {"action": "draw_circle", "params": {"x": 30, "y": 40, "radius": 20, "color": "#32cd32"}, "desc": "左侧树叶"},
+    {"action": "draw_circle", "params": {"x": 70, "y": 40, "radius": 20, "color": "#32cd32"}, "desc": "右侧树叶"}
+  ],
+  "汽车": [
+    {"action": "draw_rect", "params": {"x": 10, "y": 50, "width": 80, "height": 30, "color": "#1e90ff"}, "desc": "蓝色车身底座"},
+    {"action": "draw_rect", "params": {"x": 25, "y": 25, "width": 50, "height": 25, "color": "#add8e6"}, "desc": "浅蓝色车顶/车窗"},
+    {"action": "draw_circle", "params": {"x": 25, "y": 80, "radius": 12, "color": "#333333"}, "desc": "左车轮"},
+    {"action": "draw_circle", "params": {"x": 75, "y": 80, "radius": 12, "color": "#333333"}, "desc": "右车轮"}
+  ],
+  "云朵": [
+    {"action": "draw_circle", "params": {"x": 30, "y": 50, "radius": 20, "color": "#ffffff"}, "desc": "云朵左部"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 40, "radius": 25, "color": "#ffffff"}, "desc": "云朵中部"},
+    {"action": "draw_circle", "params": {"x": 70, "y": 50, "radius": 20, "color": "#ffffff"}, "desc": "云朵右部"}
+  ],
+  "太阳": [
+    {"action": "draw_circle", "params": {"x": 50, "y": 50, "radius": 30, "color": "#ffd700"}, "desc": "金色太阳主体"},
+    {"action": "draw_line", "params": {"start_x": 50, "start_y": 5, "end_x": 50, "end_y": 15, "color": "#ffa500", "line_width": 4}, "desc": "上光芒"},
+    {"action": "draw_line", "params": {"start_x": 50, "start_y": 85, "end_x": 50, "end_y": 95, "color": "#ffa500", "line_width": 4}, "desc": "下光芒"},
+    {"action": "draw_line", "params": {"start_x": 5, "start_y": 50, "end_x": 15, "end_y": 50, "color": "#ffa500", "line_width": 4}, "desc": "左光芒"},
+    {"action": "draw_line", "params": {"start_x": 85, "start_y": 50, "end_x": 95, "end_y": 50, "color": "#ffa500", "line_width": 4}, "desc": "右光芒"}
+  ],
+  "山脉": [
+    {"action": "draw_triangle", "params": {"x1": 0, "y1": 100, "x2": 30, "y2": 40, "x3": 60, "y3": 100, "color": "#228b22"}, "desc": "左侧矮山"},
+    {"action": "draw_triangle", "params": {"x1": 20, "y1": 100, "x2": 60, "y2": 10, "x3": 100, "y3": 100, "color": "#006400"}, "desc": "右侧高山"},
+    {"action": "draw_triangle", "params": {"x1": 40, "y1": 35, "x2": 60, "y2": 10, "x3": 80, "y3": 35, "color": "#ffffff"}, "desc": "雪顶"}
+  ],
+  "花朵": [
+    {"action": "draw_line", "params": {"start_x": 50, "start_y": 50, "end_x": 50, "end_y": 100, "color": "#228b22", "line_width": 4}, "desc": "花茎"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 50, "radius": 15, "color": "#ffeb3b"}, "desc": "花蕊"},
+    {"action": "draw_circle", "params": {"x": 30, "y": 30, "radius": 15, "color": "#ff69b4"}, "desc": "左上花瓣"},
+    {"action": "draw_circle", "params": {"x": 70, "y": 30, "radius": 15, "color": "#ff69b4"}, "desc": "右上花瓣"},
+    {"action": "draw_circle", "params": {"x": 30, "y": 70, "radius": 15, "color": "#ff69b4"}, "desc": "左下花瓣"},
+    {"action": "draw_circle", "params": {"x": 70, "y": 70, "radius": 15, "color": "#ff69b4"}, "desc": "右下花瓣"}
+  ],
+  "月亮": [
+    {"action": "draw_circle", "params": {"x": 50, "y": 50, "radius": 30, "color": "#ffd700"}, "desc": "亮部"},
+    {"action": "draw_circle", "params": {"x": 60, "y": 40, "radius": 30, "color": "#ffffff"}, "desc": "暗部遮罩(形成弯月)"}
+  ],
+  "星星": [
+    {"action": "draw_triangle", "params": {"x1": 50, "y1": 10, "x2": 35, "y2": 90, "x3": 65, "y3": 90, "color": "#ffeb3b"}, "desc": "正三角"},
+    {"action": "draw_triangle", "params": {"x1": 50, "y1": 90, "x2": 35, "y2": 10, "x3": 65, "y3": 10, "color": "#ffeb3b"}, "desc": "倒三角(组合成六芒星)"}
+  ],
+  "手机": [
+    {"action": "draw_rect", "params": {"x": 25, "y": 10, "width": 50, "height": 80, "color": "#333333"}, "desc": "外壳"},
+    {"action": "draw_rect", "params": {"x": 30, "y": 15, "width": 40, "height": 65, "color": "#e0e0e0"}, "desc": "屏幕"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 85, "radius": 3, "color": "#ffffff"}, "desc": "Home键"}
+  ],
+  "电脑": [
+    {"action": "draw_rect", "params": {"x": 10, "y": 20, "width": 80, "height": 50, "color": "#424242"}, "desc": "显示器边框"},
+    {"action": "draw_rect", "params": {"x": 15, "y": 25, "width": 70, "height": 40, "color": "#87ceeb"}, "desc": "屏幕发光区"},
+    {"action": "draw_rect", "params": {"x": 40, "y": 70, "width": 20, "height": 10, "color": "#616161"}, "desc": "支架"},
+    {"action": "draw_rect", "params": {"x": 20, "y": 80, "width": 60, "height": 5, "color": "#424242"}, "desc": "底座"}
+  ],
+  "电视": [
+    {"action": "draw_rect", "params": {"x": 5, "y": 15, "width": 90, "height": 60, "color": "#000000"}, "desc": "大屏幕边框"},
+    {"action": "draw_rect", "params": {"x": 10, "y": 20, "width": 80, "height": 50, "color": "#191970"}, "desc": "暗色屏幕"},
+    {"action": "draw_line", "params": {"start_x": 45, "start_y": 75, "end_x": 30, "end_y": 90, "color": "#424242", "line_width": 3}, "desc": "左脚"},
+    {"action": "draw_line", "params": {"start_x": 55, "start_y": 75, "end_x": 70, "end_y": 90, "color": "#424242", "line_width": 3}, "desc": "右脚"}
+  ],
+  "桌子": [
+    {"action": "draw_rect", "params": {"x": 10, "y": 40, "width": 80, "height": 10, "color": "#8b4513"}, "desc": "桌面"},
+    {"action": "draw_rect", "params": {"x": 15, "y": 50, "width": 8, "height": 45, "color": "#a0522d"}, "desc": "左桌腿"},
+    {"action": "draw_rect", "params": {"x": 77, "y": 50, "width": 8, "height": 45, "color": "#a0522d"}, "desc": "右桌腿"}
+  ],
+  "椅子": [
+    {"action": "draw_rect", "params": {"x": 20, "y": 10, "width": 10, "height": 50, "color": "#8b4513"}, "desc": "靠背左柱"},
+    {"action": "draw_rect", "params": {"x": 70, "y": 10, "width": 10, "height": 50, "color": "#8b4513"}, "desc": "靠背右柱"},
+    {"action": "draw_rect", "params": {"x": 20, "y": 50, "width": 60, "height": 10, "color": "#d2691e"}, "desc": "椅座"},
+    {"action": "draw_rect", "params": {"x": 25, "y": 60, "width": 8, "height": 35, "color": "#8b4513"}, "desc": "左前腿"},
+    {"action": "draw_rect", "params": {"x": 67, "y": 60, "width": 8, "height": 35, "color": "#8b4513"}, "desc": "右前腿"}
+  ],
+  "床": [
+    {"action": "draw_rect", "params": {"x": 10, "y": 30, "width": 15, "height": 40, "color": "#8b4513"}, "desc": "床头板"},
+    {"action": "draw_rect", "params": {"x": 25, "y": 50, "width": 65, "height": 20, "color": "#4682b4"}, "desc": "床垫"},
+    {"action": "draw_rect", "params": {"x": 28, "y": 40, "width": 20, "height": 10, "color": "#ffffff"}, "desc": "枕头"},
+    {"action": "draw_rect", "params": {"x": 15, "y": 70, "width": 8, "height": 15, "color": "#8b4513"}, "desc": "左床腿"},
+    {"action": "draw_rect", "params": {"x": 75, "y": 70, "width": 8, "height": 15, "color": "#8b4513"}, "desc": "右床腿"}
+  ],
+  "小船": [
+    {"action": "draw_triangle", "params": {"x1": 50, "y1": 10, "x2": 50, "y2": 60, "x3": 80, "y3": 60, "color": "#ffffff"}, "desc": "风帆"},
+    {"action": "draw_line", "params": {"start_x": 50, "start_y": 10, "end_x": 50, "end_y": 70, "color": "#8b4513", "line_width": 4}, "desc": "桅杆"},
+    {"action": "draw_rect", "params": {"x": 20, "y": 70, "width": 60, "height": 15, "color": "#a0522d"}, "desc": "船体主体"},
+    {"action": "draw_triangle", "params": {"x1": 10, "y1": 70, "x2": 20, "y2": 70, "x3": 20, "y3": 85, "color": "#a0522d"}, "desc": "船尾"},
+    {"action": "draw_triangle", "params": {"x1": 80, "y1": 70, "x2": 95, "y2": 70, "x3": 80, "y3": 85, "color": "#a0522d"}, "desc": "船头"}
+  ],
+  "自行车": [
+    {"action": "draw_circle", "params": {"x": 25, "y": 70, "radius": 20, "color": "#808080"}, "desc": "后轮"},
+    {"action": "draw_circle", "params": {"x": 75, "y": 70, "radius": 20, "color": "#808080"}, "desc": "前轮"},
+    {"action": "draw_line", "params": {"start_x": 25, "start_y": 70, "end_x": 45, "end_y": 40, "color": "#ff4500", "line_width": 4}, "desc": "后车架"},
+    {"action": "draw_line", "params": {"start_x": 45, "start_y": 40, "end_x": 70, "end_y": 40, "color": "#ff4500", "line_width": 4}, "desc": "上车架"},
+    {"action": "draw_line", "params": {"start_x": 70, "start_y": 40, "end_x": 75, "end_y": 70, "color": "#ff4500", "line_width": 4}, "desc": "前叉"},
+    {"action": "draw_line", "params": {"start_x": 25, "start_y": 70, "end_x": 55, "end_y": 70, "color": "#ff4500", "line_width": 4}, "desc": "底链条架"},
+    {"action": "draw_rect", "params": {"x": 40, "y": 30, "width": 10, "height": 10, "color": "#000000"}, "desc": "车座"},
+    {"action": "draw_line", "params": {"start_x": 70, "start_y": 40, "end_x": 65, "end_y": 25, "color": "#000000", "line_width": 4}, "desc": "车把手"}
+  ],
+  "苹果": [
+    {"action": "draw_circle", "params": {"x": 45, "y": 60, "radius": 25, "color": "#ff0000"}, "desc": "左半果实"},
+    {"action": "draw_circle", "params": {"x": 55, "y": 60, "radius": 25, "color": "#ff0000"}, "desc": "右半果实"},
+    {"action": "draw_line", "params": {"start_x": 50, "start_y": 40, "end_x": 55, "end_y": 20, "color": "#8b4513", "line_width": 3}, "desc": "果梗"},
+    {"action": "draw_circle", "params": {"x": 65, "y": 30, "radius": 8, "color": "#228b22"}, "desc": "叶子"}
+  ],
+  "汉堡": [
+    {"action": "draw_circle", "params": {"x": 50, "y": 35, "radius": 30, "color": "#f4a460"}, "desc": "上层圆面包"},
+    {"action": "draw_rect", "params": {"x": 20, "y": 35, "width": 60, "height": 30, "color": "#ffffff"}, "desc": "切平底部(视觉遮挡)"},
+    {"action": "draw_rect", "params": {"x": 15, "y": 45, "width": 70, "height": 10, "color": "#32cd32"}, "desc": "生菜叶"},
+    {"action": "draw_rect", "params": {"x": 20, "y": 55, "width": 60, "height": 15, "color": "#8b4513"}, "desc": "牛肉饼"},
+    {"action": "draw_rect", "params": {"x": 20, "y": 70, "width": 60, "height": 15, "color": "#f4a460"}, "desc": "下层面包"}
+  ],
+  "冰淇淋": [
+    {"action": "draw_triangle", "params": {"x1": 25, "y1": 50, "x2": 75, "y2": 50, "x3": 50, "y3": 95, "color": "#d2b48c"}, "desc": "脆皮蛋筒"},
+    {"action": "draw_circle", "params": {"x": 35, "y": 40, "radius": 15, "color": "#ffb6c1"}, "desc": "左侧草莓球"},
+    {"action": "draw_circle", "params": {"x": 65, "y": 40, "radius": 15, "color": "#ffb6c1"}, "desc": "右侧草莓球"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 25, "radius": 18, "color": "#ffb6c1"}, "desc": "顶部草莓球"}
+  ],
+  "杯子": [
+    {"action": "draw_rect", "params": {"x": 30, "y": 20, "width": 40, "height": 60, "color": "#87ceeb"}, "desc": "杯身"},
+    {"action": "draw_circle", "params": {"x": 70, "y": 50, "radius": 15, "color": "#87ceeb"}, "desc": "杯把手外圈"},
+    {"action": "draw_circle", "params": {"x": 70, "y": 50, "radius": 10, "color": "#ffffff"}, "desc": "杯把手内圈镂空"}
+  ],
+  "猫咪": [
+    {"action": "draw_circle", "params": {"x": 50, "y": 50, "radius": 30, "color": "#ffa500"}, "desc": "橘猫圆脸"},
+    {"action": "draw_triangle", "params": {"x1": 20, "y1": 30, "x2": 40, "y2": 25, "x3": 25, "y3": 5, "color": "#ffa500"}, "desc": "左耳"},
+    {"action": "draw_triangle", "params": {"x1": 80, "y1": 30, "x2": 60, "y2": 25, "x3": 75, "y3": 5, "color": "#ffa500"}, "desc": "右耳"},
+    {"action": "draw_circle", "params": {"x": 40, "y": 45, "radius": 5, "color": "#000000"}, "desc": "左眼"},
+    {"action": "draw_circle", "params": {"x": 60, "y": 45, "radius": 5, "color": "#000000"}, "desc": "右眼"},
+    {"action": "draw_triangle", "params": {"x1": 48, "y1": 55, "x2": 52, "y2": 55, "x3": 50, "y3": 60, "color": "#ffb6c1"}, "desc": "粉色小鼻子"},
+    {"action": "draw_line", "params": {"start_x": 10, "start_y": 50, "end_x": 30, "end_y": 55, "color": "#000000", "line_width": 2}, "desc": "左胡须1"},
+    {"action": "draw_line", "params": {"start_x": 10, "start_y": 60, "end_x": 30, "end_y": 60, "color": "#000000", "line_width": 2}, "desc": "左胡须2"},
+    {"action": "draw_line", "params": {"start_x": 90, "start_y": 50, "end_x": 70, "end_y": 55, "color": "#000000", "line_width": 2}, "desc": "右胡须1"},
+    {"action": "draw_line", "params": {"start_x": 90, "start_y": 60, "end_x": 70, "end_y": 60, "color": "#000000", "line_width": 2}, "desc": "右胡须2"}
+  ],
+  "人脸": [
+    {"action": "draw_circle", "params": {"x": 50, "y": 50, "radius": 40, "color": "#ffe4c4"}, "desc": "脸部轮廓"},
+    {"action": "draw_circle", "params": {"x": 35, "y": 40, "radius": 8, "color": "#ffffff"}, "desc": "左眼白"},
+    {"action": "draw_circle", "params": {"x": 35, "y": 40, "radius": 4, "color": "#000000"}, "desc": "左眼珠"},
+    {"action": "draw_circle", "params": {"x": 65, "y": 40, "radius": 8, "color": "#ffffff"}, "desc": "右眼白"},
+    {"action": "draw_circle", "params": {"x": 65, "y": 40, "radius": 4, "color": "#000000"}, "desc": "右眼珠"},
+    {"action": "draw_line", "params": {"start_x": 50, "start_y": 50, "end_x": 50, "end_y": 65, "color": "#d2b48c", "line_width": 3}, "desc": "鼻子"},
+    {"action": "draw_line", "params": {"start_x": 40, "start_y": 75, "end_x": 60, "end_y": 75, "color": "#ff6347", "line_width": 4}, "desc": "嘴巴"}
+  ],
+  "西瓜": [
+    {"action": "draw_circle", "params": {"x": 50, "y": 50, "radius": 40, "color": "#228b22"}, "desc": "绿皮外圈"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 50, "radius": 35, "color": "#ff0000"}, "desc": "红瓤"},
+    {"action": "draw_rect", "params": {"x": 0, "y": 0, "width": 100, "height": 50, "color": "#ffffff"}, "desc": "切掉上半部分(形成半圆)"},
+    {"action": "draw_circle", "params": {"x": 30, "y": 65, "radius": 2, "color": "#000000"}, "desc": "西瓜籽1"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 75, "radius": 2, "color": "#000000"}, "desc": "西瓜籽2"},
+    {"action": "draw_circle", "params": {"x": 70, "y": 65, "radius": 2, "color": "#000000"}, "desc": "西瓜籽3"}
+  ],
+  "蘑菇": [
+    {"action": "draw_rect", "params": {"x": 40, "y": 50, "width": 20, "height": 40, "color": "#ffebcd"}, "desc": "菌柄"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 50, "radius": 35, "color": "#ff0000"}, "desc": "红色菌盖"},
+    {"action": "draw_rect", "params": {"x": 0, "y": 50, "width": 100, "height": 50, "color": "#ffffff"}, "desc": "遮挡菌盖下半部分"},
+    {"action": "draw_circle", "params": {"x": 35, "y": 30, "radius": 5, "color": "#ffffff"}, "desc": "白斑1"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 15, "radius": 6, "color": "#ffffff"}, "desc": "白斑2"},
+    {"action": "draw_circle", "params": {"x": 65, "y": 35, "radius": 4, "color": "#ffffff"}, "desc": "白斑3"}
+  ],
+  "台灯": [
+    {"action": "draw_rect", "params": {"x": 30, "y": 80, "width": 40, "height": 10, "color": "#4682b4"}, "desc": "底座"},
+    {"action": "draw_line", "params": {"start_x": 50, "start_y": 80, "end_x": 50, "end_y": 30, "color": "#708090", "line_width": 5}, "desc": "灯柱"},
+    {"action": "draw_triangle", "params": {"x1": 50, "y1": 10, "x2": 25, "y2": 40, "x3": 75, "y3": 40, "color": "#4682b4"}, "desc": "灯罩"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 45, "radius": 10, "color": "#ffff00"}, "desc": "发光灯泡"}
+  ],
+  "雪人": [
+    {"action": "draw_circle", "params": {"x": 50, "y": 75, "radius": 25, "color": "#f0f8ff"}, "desc": "身体下部"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 40, "radius": 18, "color": "#f0f8ff"}, "desc": "身体中部"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 15, "radius": 12, "color": "#f0f8ff"}, "desc": "头部"},
+    {"action": "draw_circle", "params": {"x": 46, "y": 12, "radius": 2, "color": "#000000"}, "desc": "左眼"},
+    {"action": "draw_circle", "params": {"x": 54, "y": 12, "radius": 2, "color": "#000000"}, "desc": "右眼"},
+    {"action": "draw_triangle", "params": {"x1": 50, "y1": 15, "x2": 50, "y2": 19, "x3": 60, "y3": 17, "color": "#ffa500"}, "desc": "胡萝卜鼻子"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 40, "radius": 2, "color": "#000000"}, "desc": "扣子1"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 50, "radius": 2, "color": "#000000"}, "desc": "扣子2"}
+  ],
+  "旗帜": [
+    {"action": "draw_line", "params": {"start_x": 20, "start_y": 10, "end_x": 20, "end_y": 90, "color": "#808080", "line_width": 4}, "desc": "旗杆"},
+    {"action": "draw_rect", "params": {"x": 20, "y": 10, "width": 60, "height": 35, "color": "#ff0000"}, "desc": "红旗"}
+  ],
+  "气球": [
+    {"action": "draw_line", "params": {"start_x": 50, "start_y": 50, "end_x": 50, "end_y": 90, "color": "#000000", "line_width": 2}, "desc": "气球线"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 30, "radius": 20, "color": "#ff1493"}, "desc": "气球本体"},
+    {"action": "draw_triangle", "params": {"x1": 50, "y1": 50, "x2": 45, "y2": 55, "x3": 55, "y3": 55, "color": "#ff1493"}, "desc": "气球打结处"}
+  ],
+  "剪刀": [
+    {"action": "draw_circle", "params": {"x": 30, "y": 70, "radius": 10, "color": "#ff0000"}, "desc": "左把手"},
+    {"action": "draw_circle", "params": {"x": 70, "y": 70, "radius": 10, "color": "#ff0000"}, "desc": "右把手"},
+    {"action": "draw_circle", "params": {"x": 30, "y": 70, "radius": 5, "color": "#ffffff"}, "desc": "左把手镂空"},
+    {"action": "draw_circle", "params": {"x": 70, "y": 70, "radius": 5, "color": "#ffffff"}, "desc": "右把手镂空"},
+    {"action": "draw_triangle", "params": {"x1": 35, "y1": 60, "x2": 45, "y2": 50, "x3": 50, "y3": 10, "color": "#c0c0c0"}, "desc": "左刀刃"},
+    {"action": "draw_triangle", "params": {"x1": 65, "y1": 60, "x2": 55, "y2": 50, "x3": 50, "y3": 10, "color": "#c0c0c0"}, "desc": "右刀刃"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 50, "radius": 2, "color": "#000000"}, "desc": "固定轴"}
+  ],
+  "蛋糕": [
+    {"action": "draw_rect", "params": {"x": 10, "y": 60, "width": 80, "height": 40, "color": "#f5deb3"}, "desc": "蛋糕底层"},
+    {"action": "draw_rect", "params": {"x": 20, "y": 30, "width": 60, "height": 30, "color": "#ffb6c1"}, "desc": "蛋糕上层(草莓味)"},
+    {"action": "draw_rect", "params": {"x": 45, "y": 10, "width": 10, "height": 20, "color": "#ffffff"}, "desc": "蜡烛"},
+    {"action": "draw_triangle", "params": {"x1": 45, "y1": 10, "x2": 55, "y2": 10, "x3": 50, "y3": 0, "color": "#ff4500"}, "desc": "火焰"}
+  ],
+  "披萨": [
+    {"action": "draw_triangle", "params": {"x1": 50, "y1": 10, "x2": 10, "y2": 90, "x3": 90, "y3": 90, "color": "#ffa500"}, "desc": "披萨面饼"},
+    {"action": "draw_rect", "params": {"x": 10, "y": 90, "width": 80, "height": 10, "color": "#8b4513"}, "desc": "披萨边沿(芝士边)"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 40, "radius": 5, "color": "#ff0000"}, "desc": "意大利香肠片1"},
+    {"action": "draw_circle", "params": {"x": 35, "y": 70, "radius": 5, "color": "#ff0000"}, "desc": "意大利香肠片2"},
+    {"action": "draw_circle", "params": {"x": 65, "y": 70, "radius": 5, "color": "#ff0000"}, "desc": "意大利香肠片3"}
+  ],
+  "糖果": [
+    {"action": "draw_circle", "params": {"x": 50, "y": 50, "radius": 15, "color": "#ff1493"}, "desc": "糖果中心"},
+    {"action": "draw_triangle", "params": {"x1": 35, "y1": 50, "x2": 15, "y2": 35, "x3": 15, "y3": 65, "color": "#ff69b4"}, "desc": "左侧包装纸"},
+    {"action": "draw_triangle", "params": {"x1": 65, "y1": 50, "x2": 85, "y2": 35, "x3": 85, "y3": 65, "color": "#ff69b4"}, "desc": "右侧包装纸"}
+  ],
+  "雨伞": [
+    {"action": "draw_circle", "params": {"x": 50, "y": 50, "radius": 40, "color": "#1e90ff"}, "desc": "伞面上半圆"},
+    {"action": "draw_rect", "params": {"x": 0, "y": 50, "width": 100, "height": 50, "color": "#ffffff"}, "desc": "遮挡下半圆(仅在白底生效)"},
+    {"action": "draw_line", "params": {"start_x": 50, "start_y": 50, "end_x": 50, "end_y": 90, "color": "#000000", "line_width": 3}, "desc": "伞柄主体"},
+    {"action": "draw_circle", "params": {"x": 45, "y": 90, "radius": 5, "color": "#000000"}, "desc": "伞把手左弯钩"}
+  ],
+  "眼镜": [
+    {"action": "draw_circle", "params": {"x": 30, "y": 50, "radius": 20, "color": "#333333"}, "desc": "左侧镜框"},
+    {"action": "draw_circle", "params": {"x": 70, "y": 50, "radius": 20, "color": "#333333"}, "desc": "右侧镜框"},
+    {"action": "draw_circle", "params": {"x": 30, "y": 50, "radius": 16, "color": "#e0ffff"}, "desc": "左侧镜片"},
+    {"action": "draw_circle", "params": {"x": 70, "y": 50, "radius": 16, "color": "#e0ffff"}, "desc": "右侧镜片"},
+    {"action": "draw_line", "params": {"start_x": 48, "start_y": 50, "end_x": 52, "end_y": 50, "color": "#333333", "line_width": 4}, "desc": "鼻梁架"},
+    {"action": "draw_line", "params": {"start_x": 10, "start_y": 50, "end_x": 0, "end_y": 40, "color": "#333333", "line_width": 3}, "desc": "左镜腿"},
+    {"action": "draw_line", "params": {"start_x": 90, "start_y": 50, "end_x": 100, "end_y": 40, "color": "#333333", "line_width": 3}, "desc": "右镜腿"}
+  ],
+  "书包": [
+    {"action": "draw_rect", "params": {"x": 25, "y": 30, "width": 50, "height": 60, "color": "#ff8c00"}, "desc": "书包主体"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 30, "radius": 25, "color": "#ff8c00"}, "desc": "书包圆顶"},
+    {"action": "draw_rect", "params": {"x": 35, "y": 50, "width": 30, "height": 30, "color": "#ffd700"}, "desc": "前置小口袋"},
+    {"action": "draw_line", "params": {"start_x": 30, "start_y": 30, "end_x": 20, "end_y": 10, "color": "#333333", "line_width": 4}, "desc": "左侧背带"},
+    {"action": "draw_line", "params": {"start_x": 70, "start_y": 30, "end_x": 80, "end_y": 10, "color": "#333333", "line_width": 4}, "desc": "右侧背带"}
+  ],
+  "书本": [
+    {"action": "draw_rect", "params": {"x": 10, "y": 20, "width": 40, "height": 60, "color": "#4169e1"}, "desc": "左侧蓝色封面"},
+    {"action": "draw_rect", "params": {"x": 50, "y": 20, "width": 40, "height": 60, "color": "#4169e1"}, "desc": "右侧蓝色封面"},
+    {"action": "draw_rect", "params": {"x": 15, "y": 25, "width": 35, "height": 50, "color": "#f8f8ff"}, "desc": "左侧书页"},
+    {"action": "draw_rect", "params": {"x": 50, "y": 25, "width": 35, "height": 50, "color": "#f8f8ff"}, "desc": "右侧书页"},
+    {"action": "draw_line", "params": {"start_x": 50, "start_y": 20, "end_x": 50, "end_y": 80, "color": "#00008b", "line_width": 2}, "desc": "书本中缝"}
+  ],
+  "铅笔": [
+    {"action": "draw_rect", "params": {"x": 30, "y": 10, "width": 40, "height": 60, "color": "#ffd700"}, "desc": "黄色笔杆"},
+    {"action": "draw_triangle", "params": {"x1": 30, "y1": 70, "x2": 70, "y2": 70, "x3": 50, "y3": 95, "color": "#f5deb3"}, "desc": "削出的木头"},
+    {"action": "draw_triangle", "params": {"x1": 45, "y1": 88, "x2": 55, "y2": 88, "x3": 50, "y3": 95, "color": "#333333"}, "desc": "黑色的笔芯尖端"},
+    {"action": "draw_rect", "params": {"x": 30, "y": 0, "width": 40, "height": 10, "color": "#ff69b4"}, "desc": "粉色橡皮擦"}
+  ],
+  "放大镜": [
+    {"action": "draw_line", "params": {"start_x": 60, "start_y": 60, "end_x": 90, "end_y": 90, "color": "#8b4513", "line_width": 8}, "desc": "棕色手柄"},
+    {"action": "draw_circle", "params": {"x": 40, "y": 40, "radius": 30, "color": "#696969"}, "desc": "金属外框"},
+    {"action": "draw_circle", "params": {"x": 40, "y": 40, "radius": 25, "color": "#e0ffff"}, "desc": "玻璃镜片"}
+  ],
+  "飞机": [
+    {"action": "draw_rect", "params": {"x": 20, "y": 40, "width": 60, "height": 20, "color": "#ffffff"}, "desc": "白色机身"},
+    {"action": "draw_circle", "params": {"x": 80, "y": 50, "radius": 10, "color": "#ffffff"}, "desc": "机头"},
+    {"action": "draw_triangle", "params": {"x1": 20, "y1": 40, "x2": 35, "y2": 20, "x3": 35, "y3": 40, "color": "#1e90ff"}, "desc": "尾翼"},
+    {"action": "draw_triangle", "params": {"x1": 50, "y1": 40, "x2": 70, "y2": 20, "x3": 40, "y3": 20, "color": "#1e90ff"}, "desc": "上机翼"},
+    {"action": "draw_triangle", "params": {"x1": 50, "y1": 60, "x2": 70, "y2": 80, "x3": 40, "y3": 80, "color": "#1e90ff"}, "desc": "下机翼"}
+  ],
+  "火箭": [
+    {"action": "draw_rect", "params": {"x": 35, "y": 30, "width": 30, "height": 50, "color": "#f8f8ff"}, "desc": "火箭主体"},
+    {"action": "draw_triangle", "params": {"x1": 35, "y1": 30, "x2": 65, "y2": 30, "x3": 50, "y3": 0, "color": "#ff0000"}, "desc": "红色锥形头部"},
+    {"action": "draw_triangle", "params": {"x1": 35, "y1": 60, "x2": 35, "y2": 80, "x3": 15, "y3": 80, "color": "#ff0000"}, "desc": "左侧推进器翼"},
+    {"action": "draw_triangle", "params": {"x1": 65, "y1": 60, "x2": 65, "y2": 80, "x3": 85, "y3": 80, "color": "#ff0000"}, "desc": "右侧推进器翼"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 45, "radius": 8, "color": "#87ceeb"}, "desc": "蓝色舷窗"},
+    {"action": "draw_triangle", "params": {"x1": 35, "y1": 80, "x2": 65, "y2": 80, "x3": 50, "y3": 100, "color": "#ffa500"}, "desc": "尾部喷射火焰"}
+  ],
+  "热气球": [
+    {"action": "draw_circle", "params": {"x": 50, "y": 40, "radius": 35, "color": "#ff4500"}, "desc": "红色气球主体"},
+    {"action": "draw_rect", "params": {"x": 40, "y": 85, "width": 20, "height": 15, "color": "#8b4513"}, "desc": "载人吊篮"},
+    {"action": "draw_line", "params": {"start_x": 25, "start_y": 65, "end_x": 40, "end_y": 85, "color": "#000000", "line_width": 2}, "desc": "左侧绳索"},
+    {"action": "draw_line", "params": {"start_x": 75, "start_y": 65, "end_x": 60, "end_y": 85, "color": "#000000", "line_width": 2}, "desc": "右侧绳索"}
+  ],
+  "帐篷": [
+    {"action": "draw_triangle", "params": {"x1": 10, "y1": 90, "x2": 90, "y2": 90, "x3": 50, "y3": 30, "color": "#2e8b57"}, "desc": "绿色帐篷主体"},
+    {"action": "draw_triangle", "params": {"x1": 40, "y1": 90, "x2": 60, "y2": 90, "x3": 50, "y3": 60, "color": "#000000"}, "desc": "黑色入口门洞"},
+    {"action": "draw_line", "params": {"start_x": 10, "start_y": 90, "end_x": 50, "end_y": 30, "color": "#a9a9a9", "line_width": 2}, "desc": "左侧支架骨架"},
+    {"action": "draw_line", "params": {"start_x": 90, "start_y": 90, "end_x": 50, "end_y": 30, "color": "#a9a9a9", "line_width": 2}, "desc": "右侧支架骨架"}
+  ],
+  "灯塔": [
+    {"action": "draw_rect", "params": {"x": 30, "y": 90, "width": 40, "height": 10, "color": "#808080"}, "desc": "岩石底座"},
+    {"action": "draw_triangle", "params": {"x1": 30, "y1": 90, "x2": 70, "y2": 90, "x3": 50, "y3": 20, "color": "#ffffff"}, "desc": "塔身主体"},
+    {"action": "draw_rect", "params": {"x": 40, "y": 10, "width": 20, "height": 10, "color": "#ffff00"}, "desc": "发光灯室"},
+    {"action": "draw_triangle", "params": {"x1": 35, "y1": 10, "x2": 65, "y2": 10, "x3": 50, "y3": 0, "color": "#ff0000"}, "desc": "红色塔顶"}
+  ],
+  "城堡": [
+    {"action": "draw_rect", "params": {"x": 20, "y": 50, "width": 60, "height": 50, "color": "#a9a9a9"}, "desc": "主城墙"},
+    {"action": "draw_rect", "params": {"x": 10, "y": 30, "width": 20, "height": 70, "color": "#808080"}, "desc": "左侧塔楼"},
+    {"action": "draw_rect", "params": {"x": 70, "y": 30, "width": 20, "height": 70, "color": "#808080"}, "desc": "右侧塔楼"},
+    {"action": "draw_triangle", "params": {"x1": 5, "y1": 30, "x2": 35, "y2": 30, "x3": 20, "y3": 10, "color": "#8b0000"}, "desc": "左塔尖顶"},
+    {"action": "draw_triangle", "params": {"x1": 65, "y1": 30, "x2": 95, "y2": 30, "x3": 80, "y3": 10, "color": "#8b0000"}, "desc": "右塔尖顶"},
+    {"action": "draw_rect", "params": {"x": 40, "y": 70, "width": 20, "height": 30, "color": "#8b4513"}, "desc": "城门"}
+  ],
+  "仙人掌": [
+    {"action": "draw_rect", "params": {"x": 40, "y": 30, "width": 20, "height": 60, "color": "#228b22"}, "desc": "主干"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 30, "radius": 10, "color": "#228b22"}, "desc": "主干圆顶"},
+    {"action": "draw_rect", "params": {"x": 20, "y": 40, "width": 10, "height": 20, "color": "#228b22"}, "desc": "左分支竖"},
+    {"action": "draw_rect", "params": {"x": 20, "y": 60, "width": 20, "height": 10, "color": "#228b22"}, "desc": "左分支横"},
+    {"action": "draw_circle", "params": {"x": 25, "y": 40, "radius": 5, "color": "#228b22"}, "desc": "左分支圆顶"},
+    {"action": "draw_rect", "params": {"x": 70, "y": 20, "width": 10, "height": 30, "color": "#228b22"}, "desc": "右分支竖"},
+    {"action": "draw_rect", "params": {"x": 60, "y": 50, "width": 10, "height": 10, "color": "#228b22"}, "desc": "右分支横"},
+    {"action": "draw_circle", "params": {"x": 75, "y": 20, "radius": 5, "color": "#228b22"}, "desc": "右分支圆顶"},
+    {"action": "draw_rect", "params": {"x": 30, "y": 90, "width": 40, "height": 10, "color": "#d2691e"}, "desc": "花盆"}
+  ],
+  "蝴蝶": [
+    {"action": "draw_rect", "params": {"x": 48, "y": 20, "width": 4, "height": 60, "color": "#333333"}, "desc": "黑色身体躯干"},
+    {"action": "draw_circle", "params": {"x": 30, "y": 40, "radius": 20, "color": "#dda0dd"}, "desc": "左上前翅"},
+    {"action": "draw_circle", "params": {"x": 35, "y": 65, "radius": 15, "color": "#dda0dd"}, "desc": "左下后翅"},
+    {"action": "draw_circle", "params": {"x": 70, "y": 40, "radius": 20, "color": "#dda0dd"}, "desc": "右上前翅"},
+    {"action": "draw_circle", "params": {"x": 65, "y": 65, "radius": 15, "color": "#dda0dd"}, "desc": "右下后翅"},
+    {"action": "draw_line", "params": {"start_x": 48, "start_y": 20, "end_x": 40, "end_y": 10, "color": "#333333", "line_width": 2}, "desc": "左触角"},
+    {"action": "draw_line", "params": {"start_x": 52, "start_y": 20, "end_x": 60, "end_y": 10, "color": "#333333", "line_width": 2}, "desc": "右触角"}
+  ],
+  "企鹅": [
+    {"action": "draw_circle", "params": {"x": 50, "y": 50, "radius": 40, "color": "#000000"}, "desc": "黑色身体外轮廓"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 55, "radius": 30, "color": "#ffffff"}, "desc": "白色肚皮和脸部"},
+    {"action": "draw_circle", "params": {"x": 40, "y": 30, "radius": 4, "color": "#000000"}, "desc": "左眼"},
+    {"action": "draw_circle", "params": {"x": 60, "y": 30, "radius": 4, "color": "#000000"}, "desc": "右眼"},
+    {"action": "draw_triangle", "params": {"x1": 45, "y1": 40, "x2": 55, "y2": 40, "x3": 50, "y3": 50, "color": "#ffa500"}, "desc": "橘色尖嘴"},
+    {"action": "draw_circle", "params": {"x": 35, "y": 85, "radius": 10, "color": "#ffa500"}, "desc": "左脚"},
+    {"action": "draw_circle", "params": {"x": 65, "y": 85, "radius": 10, "color": "#ffa500"}, "desc": "右脚"}
+  ],
+  "皇冠": [
+    {"action": "draw_rect", "params": {"x": 20, "y": 70, "width": 60, "height": 20, "color": "#ffd700"}, "desc": "金色底座"},
+    {"action": "draw_triangle", "params": {"x1": 20, "y1": 70, "x2": 40, "y2": 70, "x3": 20, "y3": 30, "color": "#ffd700"}, "desc": "左侧尖峰"},
+    {"action": "draw_triangle", "params": {"x1": 30, "y1": 70, "x2": 70, "y2": 70, "x3": 50, "y3": 20, "color": "#ffd700"}, "desc": "中间高尖峰"},
+    {"action": "draw_triangle", "params": {"x1": 60, "y1": 70, "x2": 80, "y2": 70, "x3": 80, "y3": 30, "color": "#ffd700"}, "desc": "右侧尖峰"},
+    {"action": "draw_circle", "params": {"x": 20, "y": 30, "radius": 5, "color": "#ff0000"}, "desc": "左红宝石"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 20, "radius": 5, "color": "#0000ff"}, "desc": "中蓝宝石"},
+    {"action": "draw_circle", "params": {"x": 80, "y": 30, "radius": 5, "color": "#ff0000"}, "desc": "右红宝石"}
+  ],
+  "风车": [
+    {"action": "draw_triangle", "params": {"x1": 20, "y1": 100, "x2": 80, "y2": 100, "x3": 50, "y3": 40, "color": "#8b4513"}, "desc": "棕色底座"},
+    {"action": "draw_triangle", "params": {"x1": 50, "y1": 50, "x2": 60, "y2": 45, "x3": 80, "y3": 20, "color": "#f0f8ff"}, "desc": "右上叶片"},
+    {"action": "draw_triangle", "params": {"x1": 50, "y1": 50, "x2": 55, "y2": 60, "x3": 80, "y3": 80, "color": "#f0f8ff"}, "desc": "右下叶片"},
+    {"action": "draw_triangle", "params": {"x1": 50, "y1": 50, "x2": 40, "y2": 55, "x3": 20, "y3": 80, "color": "#f0f8ff"}, "desc": "左下叶片"},
+    {"action": "draw_triangle", "params": {"x1": 50, "y1": 50, "x2": 45, "y2": 40, "x3": 20, "y3": 20, "color": "#f0f8ff"}, "desc": "左上叶片"},
+    {"action": "draw_circle", "params": {"x": 50, "y": 50, "radius": 5, "color": "#000000"}, "desc": "中心固定轴"}
+  ]
+}
