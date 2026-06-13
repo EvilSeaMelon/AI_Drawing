@@ -61,7 +61,7 @@
 <body>
 
     <h1>🎨 AI 纯语音绘图助手</h1>
-    <p id="status-text">请允许浏览器使用麦克风。点击下方按钮，或按住键盘“空格键”开始说话。</p>
+    <p id="status-text">请允许浏览器使用麦克风。</p>
 
     <div id="canvas-container">
         <canvas id="paintCanvas" width="800" height="500"></canvas>
@@ -74,61 +74,96 @@
     <script>
         // --- 1. 基础配置与画布初始化 ---
         const BACKEND_URL = "http://127.0.0.1:8000/api/command";
-        const SESSION_ID = "demo_session_" + Math.floor(Math.random() * 10000); // 随机生成会话ID
+        const SESSION_ID = "demo_session_" + Math.floor(Math.random() * 10000);
 
         const canvas = document.getElementById('paintCanvas');
         const ctx = canvas.getContext('2d');
         const micBtn = document.getElementById('mic-btn');
         const statusText = document.getElementById('status-text');
 
-        // --- 2. 语音识别 (STT) 初始化 ---
+        // --- 2. 智能语音识别与状态机设计 ---
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SpeechRecognition) {
-            alert("您的浏览器不支持语音识别，请使用最新版 Chrome 或 Edge 浏览器！");
+            alert("您的浏览器不支持语音识别，请使用最新版 Chrome 或 Edge！");
         }
         const recognition = new SpeechRecognition();
         recognition.lang = 'zh-CN';
-        recognition.interimResults = false; // 只取最终结果
+        recognition.continuous = false;
+        recognition.interimResults = false;
 
-        let isRecording = false;
+        // 核心修改：默认让系统处于激活和休眠轮询状态
+        let isSystemActive = true;
+        let appState = 'SLEEPING';
 
-        // 按钮交互逻辑
-        micBtn.addEventListener('mousedown', startRecording);
-        micBtn.addEventListener('mouseup', stopRecording);
-
-        // 键盘空格键交互逻辑 (满足无鼠标操作的扩展)
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && !isRecording) startRecording();
-        });
-        document.addEventListener('keyup', (e) => {
-            if (e.code === 'Space' && isRecording) stopRecording();
-        });
-
-        function startRecording() {
-            isRecording = true;
+        // 核心修改：网页加载完毕后，自动请求麦克风并启动
+        window.onload = () => {
             micBtn.classList.add('recording');
-            micBtn.innerText = "🛑 正在聆听...";
-            statusText.innerText = "请说出您的绘图指令，例如：'在中间画一个红色的圆'...";
-            try { recognition.start(); } catch(e) {}
-        }
-
-        function stopRecording() {
-            isRecording = false;
-            micBtn.classList.remove('recording');
-            micBtn.innerText = "🎙️ 点击说话";
-            recognition.stop();
-        }
-
-        // 当识别到语音并转化为文字时触发
-        recognition.onresult = async (event) => {
-            const transcript = event.results[0][0].transcript;
-            statusText.innerText = `您说: "${transcript}"，AI正在处理中...`;
-
-            // 发送给 FastAPI 后端
-            await sendCommandToAI(transcript);
+            micBtn.innerText = "引擎已自动启动";
+            statusText.innerText = "系统休眠中，请说出“你好小智”唤醒我...";
+            try {
+                recognition.start();
+            } catch(e) {
+                console.error("麦克风自动启动失败:", e);
+            }
         };
 
-        // --- 3. 与后端交互核心逻辑 ---
+        // 按钮保留，降级为“强制关闭/重启”的开关
+        micBtn.addEventListener('click', () => {
+            if (!isSystemActive) {
+                isSystemActive = true;
+                appState = 'SLEEPING';
+                micBtn.classList.add('recording');
+                micBtn.innerText = "引擎已启动";
+                statusText.innerText = "系统休眠中，请说出“你好小智”唤醒我...";
+                try { recognition.start(); } catch(e) {}
+            } else {
+                isSystemActive = false;
+                micBtn.classList.remove('recording');
+                micBtn.innerText = "已手动关闭，点击重启";
+                statusText.innerText = "系统已彻底关闭。";
+                recognition.stop();
+            }
+        });
+
+        // 语音断开时自动重连逻辑
+        recognition.onend = () => {
+            if (isSystemActive && appState !== 'PROCESSING') {
+                try { recognition.start(); } catch(e) {}
+            }
+        };
+
+        // --- 3. 核心流转逻辑 (拦截唤醒词) ---
+        recognition.onresult = async (event) => {
+            const transcript = event.results[0][0].transcript.trim();
+            if (!transcript) return;
+
+            if (appState === 'SLEEPING') {
+                if (transcript.includes("小智") || transcript.includes("小指") || transcript.includes("小纸")) {
+                    appState = 'PROCESSING';
+                    recognition.stop();
+
+                    statusText.innerText = `已唤醒！(听到: ${transcript})`;
+
+                    speak("我在呢，请吩咐", () => {
+                        appState = 'AWAKE';
+                        statusText.innerText = "🟢 正在聆听您的绘图指令...";
+                        try { recognition.start(); } catch(e) {}
+                    });
+                } else {
+                    statusText.innerText = `💤 休眠中 (过滤杂音: "${transcript}")`;
+                }
+                return;
+            }
+
+            if (appState === 'AWAKE') {
+                appState = 'PROCESSING';
+                recognition.stop();
+                statusText.innerText = `您说: "${transcript}"，AI正在思考与作画...`;
+                await sendCommandToAI(transcript);
+            }
+        };
+
+        // --- 4. 与后端交互逻辑 ---
         async function sendCommandToAI(text) {
             try {
                 const response = await fetch(BACKEND_URL, {
@@ -143,76 +178,75 @@
                 const data = await response.json();
                 if (data.code === 200) {
                     const aiResult = data.data;
-                    statusText.innerText = `AI 回复: ${aiResult.message}`;
-
-                    // 1. 语音播报 AI 的回复 (TTS)
-                    speak(aiResult.message);
-
-                    // 2. 渲染画布
                     executeDrawActions(aiResult.actions);
+
+                    speak(aiResult.message, () => {
+                        appState = 'SLEEPING';
+                        statusText.innerText = "执行完毕。系统重新进入休眠，请说“你好小智”唤醒。";
+                        if (isSystemActive) {
+                            try { recognition.start(); } catch(e) {}
+                        }
+                    });
                 } else {
-                    statusText.innerText = "服务器处理失败，请看控制台。";
-                    console.error(data);
+                    statusText.innerText = "服务器处理失败。";
                 }
             } catch (error) {
-                statusText.innerText = "网络错误，请确保 FastAPI 后端已启动。";
-                console.error("Error:", error);
+                statusText.innerText = "网络错误，请确保后端已启动。";
             }
         }
 
-        // --- 4. 语音播报 (TTS) ---
-        function speak(text) {
+        // --- 5. 增强版语音播报 ---
+        function speak(text, onEndCallback) {
+            // 注意：如果页面没有任何点击交互，这句代码可能会被浏览器静音拦截
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'zh-CN';
+
+            utterance.onend = () => {
+                if (onEndCallback) onEndCallback();
+            };
+
+            // 错误处理：如果因为没有交互被拦截，强行回调让流程走下去
+            utterance.onerror = (e) => {
+                console.warn("语音播报被浏览器拦截，请在页面空白处点击一次鼠标。", e);
+                if (onEndCallback) onEndCallback();
+            };
+
             window.speechSynthesis.speak(utterance);
         }
 
-        // --- 5. Canvas 增强版渲染引擎 ---
+        // --- 6. Canvas 渲染引擎 ---
         function executeDrawActions(actions) {
             actions.forEach(item => {
                 const action = item.action;
                 const params = item.params;
 
                 ctx.beginPath();
-
-                // 设置通用颜色和线条粗细
                 if (params.color) {
                     ctx.fillStyle = params.color;
                     ctx.strokeStyle = params.color;
                 }
-                ctx.lineWidth = params.line_width || 2; // 默认线宽为2
+                ctx.lineWidth = params.line_width || 2;
 
-                // 1. 画圆
                 if (action === "draw_circle") {
                     ctx.arc(params.x, params.y, params.radius, 0, 2 * Math.PI);
                     ctx.fill();
-                }
-                // 2. 画矩形
-                else if (action === "draw_rect") {
+                } else if (action === "draw_rect") {
                     ctx.fillRect(params.x, params.y, params.width, params.height);
-                }
-                // 3. 画直线 (新增)
-                else if (action === "draw_line") {
+                } else if (action === "draw_line") {
                     ctx.moveTo(params.start_x, params.start_y);
                     ctx.lineTo(params.end_x, params.end_y);
                     ctx.stroke();
-                }
-                // 4. 画三角形 (新增)
-                else if (action === "draw_triangle") {
+                } else if (action === "draw_triangle") {
                     ctx.moveTo(params.x1, params.y1);
                     ctx.lineTo(params.x2, params.y2);
                     ctx.lineTo(params.x3, params.y3);
-                    ctx.closePath(); // 闭合路径
+                    ctx.closePath();
                     ctx.fill();
-                }
-                // 5. 写文字 (新增)
-                else if (action === "draw_text") {
+                } else if (action === "draw_text") {
                     const fontSize = params.font_size || 24;
                     ctx.font = `${fontSize}px 'Segoe UI', sans-serif`;
                     ctx.fillText(params.text, params.x, params.y);
-                }
-                // 6. 清空画布
-                else if (action === "clear_canvas") {
+                } else if (action === "clear_canvas") {
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                 }
             });
