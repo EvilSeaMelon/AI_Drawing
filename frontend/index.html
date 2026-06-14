@@ -81,85 +81,114 @@
         const micBtn = document.getElementById('mic-btn');
         const statusText = document.getElementById('status-text');
 
-        // --- 2. 智能语音识别与状态机设计 ---
+        // --- 2. 智能语音识别与缓冲状态机 ---
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SpeechRecognition) {
             alert("您的浏览器不支持语音识别，请使用最新版 Chrome 或 Edge！");
         }
         const recognition = new SpeechRecognition();
         recognition.lang = 'zh-CN';
-        recognition.continuous = false;
-        recognition.interimResults = false;
 
-        // 核心修改：默认让系统处于激活和休眠轮询状态
+        recognition.continuous = true;
+        recognition.interimResults = true;
+
         let isSystemActive = true;
         let appState = 'SLEEPING';
+        let commandBuffer = "";
+        let silenceTimer = null;
 
-        // 核心修改：网页加载完毕后，自动请求麦克风并启动
         window.onload = () => {
             micBtn.classList.add('recording');
-            micBtn.innerText = "引擎已自动启动";
-            statusText.innerText = "系统休眠中，请说出“你好小智”唤醒我...";
-            try {
-                recognition.start();
-            } catch(e) {
-                console.error("麦克风自动启动失败:", e);
-            }
+            micBtn.innerText = "🟢 引擎已自动启动，待唤醒";
+            statusText.innerText = "💤 请允许麦克风权限。系统休眠中，请说出“你好小智”唤醒我...";
+            try { recognition.start(); } catch(e) {}
         };
 
-        // 按钮保留，降级为“强制关闭/重启”的开关
         micBtn.addEventListener('click', () => {
             if (!isSystemActive) {
                 isSystemActive = true;
                 appState = 'SLEEPING';
                 micBtn.classList.add('recording');
-                micBtn.innerText = "引擎已启动";
-                statusText.innerText = "系统休眠中，请说出“你好小智”唤醒我...";
+                micBtn.innerText = "🟢 引擎已启动，待唤醒";
+                statusText.innerText = "💤 系统休眠中，请说出“你好小智”唤醒我...";
                 try { recognition.start(); } catch(e) {}
             } else {
                 isSystemActive = false;
                 micBtn.classList.remove('recording');
-                micBtn.innerText = "已手动关闭，点击重启";
+                micBtn.innerText = "🎙️ 已手动关闭，点击重启";
                 statusText.innerText = "系统已彻底关闭。";
                 recognition.stop();
             }
         });
 
-        // 语音断开时自动重连逻辑
         recognition.onend = () => {
             if (isSystemActive && appState !== 'PROCESSING') {
                 try { recognition.start(); } catch(e) {}
             }
         };
 
-        // --- 3. 核心流转逻辑 (拦截唤醒词) ---
+        // --- 3. 核心流转逻辑---
         recognition.onresult = async (event) => {
-            const transcript = event.results[0][0].transcript.trim();
-            if (!transcript) return;
+            let currentFinal = "";   // 新确认的文字段落
+            let currentInterim = ""; // 正在识别中、随时可能变的文字
 
+            // 【修复】循环遍历从上次到现在的所有的识别结果，绝不漏字
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    currentFinal += event.results[i][0].transcript;
+                } else {
+                    currentInterim += event.results[i][0].transcript;
+                }
+            }
+
+            // 状态 1：休眠中，只拦截唤醒词
             if (appState === 'SLEEPING') {
-                if (transcript.includes("小智") || transcript.includes("小指") || transcript.includes("小纸")) {
+                const textToAnalyze = (currentFinal || currentInterim).trim();
+                if (textToAnalyze.includes("小智") || textToAnalyze.includes("小指") || textToAnalyze.includes("小纸")) {
                     appState = 'PROCESSING';
                     recognition.stop();
 
-                    statusText.innerText = `已唤醒！(听到: ${transcript})`;
-
+                    statusText.innerText = `🌟 已唤醒！`;
                     speak("我在呢，请吩咐", () => {
                         appState = 'AWAKE';
+                        commandBuffer = ""; // 唤醒时清空缓存
                         statusText.innerText = "🟢 正在聆听您的绘图指令...";
                         try { recognition.start(); } catch(e) {}
                     });
-                } else {
-                    statusText.innerText = `💤 休眠中 (过滤杂音: "${transcript}")`;
                 }
                 return;
             }
 
+            // 状态 2：已唤醒，开始无损拼接用户指令
             if (appState === 'AWAKE') {
-                appState = 'PROCESSING';
-                recognition.stop();
-                statusText.innerText = `您说: "${transcript}"，AI正在思考与作画...`;
-                await sendCommandToAI(transcript);
+                // 如果有正在识别的“草稿文字”，实时显示在屏幕上（体验极佳）
+                if (currentInterim) {
+                    statusText.innerText = `👂 正在听: "${commandBuffer + currentInterim}"`;
+                }
+
+                // 如果有确认的文字，拼接到总指令库里
+                if (currentFinal) {
+                    commandBuffer += currentFinal + "，";
+                    statusText.innerText = `👂 已确认: "${commandBuffer}" (停顿2秒执行...)`;
+                }
+
+                // 只要有任何声音变化，就重置 2 秒倒计时防抖
+                if (currentInterim || currentFinal) {
+                    clearTimeout(silenceTimer);
+                    silenceTimer = setTimeout(async () => {
+                        // 确保有实际文字才发送
+                        if (!commandBuffer.trim()) return;
+
+                        appState = 'PROCESSING';
+                        recognition.stop();
+
+                        const finalCommand = commandBuffer;
+                        commandBuffer = ""; // 清空为下次准备
+
+                        statusText.innerText = `🚀 最终指令: "${finalCommand}"，AI正在作画...`;
+                        await sendCommandToAI(finalCommand);
+                    }, 2000);
+                }
             }
         };
 
@@ -182,7 +211,7 @@
 
                     speak(aiResult.message, () => {
                         appState = 'SLEEPING';
-                        statusText.innerText = "执行完毕。系统重新进入休眠，请说“你好小智”唤醒。";
+                        statusText.innerText = "💤 执行完毕。系统重新休眠，请说“你好小智”唤醒。";
                         if (isSystemActive) {
                             try { recognition.start(); } catch(e) {}
                         }
@@ -197,7 +226,6 @@
 
         // --- 5. 增强版语音播报 ---
         function speak(text, onEndCallback) {
-            // 注意：如果页面没有任何点击交互，这句代码可能会被浏览器静音拦截
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'zh-CN';
 
@@ -205,9 +233,8 @@
                 if (onEndCallback) onEndCallback();
             };
 
-            // 错误处理：如果因为没有交互被拦截，强行回调让流程走下去
             utterance.onerror = (e) => {
-                console.warn("语音播报被浏览器拦截，请在页面空白处点击一次鼠标。", e);
+                console.warn("语音播报被拦截，请在空白处点击一次鼠标。", e);
                 if (onEndCallback) onEndCallback();
             };
 
